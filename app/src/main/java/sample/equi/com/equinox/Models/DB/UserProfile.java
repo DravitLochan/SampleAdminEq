@@ -1,4 +1,4 @@
-package sample.equi.com.equinox.DB;
+package sample.equi.com.equinox.Models.DB;
 
 import com.orm.SugarRecord;
 
