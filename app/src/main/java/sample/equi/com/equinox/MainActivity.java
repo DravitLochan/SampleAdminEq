@@ -1,33 +1,69 @@
 package sample.equi.com.equinox;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import sample.equi.com.equinox.Common.HttpResponse;
+
+import sample.equi.com.equinox.Adapters.UserAdapter;
 import sample.equi.com.equinox.Common.ServiceHandler;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.Models.GSON.UserProfileGsonModel;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView listUsers;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<UserProfileDbModel> users;
+    private UserAdapter userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new SampleApiCall().execute();
+        init(MainActivity.this);
+        // new SampleApiCall().execute();
         // todo : add a splash screen and make it default launcher.
 
 
+    }
+
+    void init(Context context){
+        Fresco.initialize(this);
+        listUsers = findViewById(R.id.rv_list_users);
+        layoutManager = new LinearLayoutManager(context);
+        listUsers.setLayoutManager(layoutManager);
+        listUsers.setItemAnimator(new DefaultItemAnimator());
+        users = new ArrayList<>();
+        fetchUsersFromDb();
+        userAdapter = new UserAdapter(context, users);
+        listUsers.setAdapter(userAdapter);
+        userAdapter.notifyDataSetChanged();
+    }
+
+    private void fetchUsersFromDb() {
+        List<UserProfileDbModel> dbUsers = UserProfileDbModel.listAll(UserProfileDbModel.class);
+        for (int i = 0; i < dbUsers.size(); i++) {
+            users.add(dbUsers.get(i));
+        }
     }
 
     private class SampleApiCall extends AsyncTask<Void, Void, String>{

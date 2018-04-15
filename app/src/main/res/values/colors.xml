@@ -3,6 +3,7 @@
     <color name="colorPrimary">#F15B32</color>
     <color name="colorPrimaryDark">#B23E18</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorWhite">#FFFFFF</color>
 
     <color name="time_new_user">#4F73B4</color>
     <color name="time_new_viewed">#4884EA</color>
