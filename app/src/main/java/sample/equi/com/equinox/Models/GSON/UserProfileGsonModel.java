@@ -109,7 +109,7 @@ public class UserProfileGsonModel {
         this.picture = picture;
     }
 
-    class Name {
+    public class Name {
         private String title;
         private String first;
         private String last;
@@ -145,7 +145,7 @@ public class UserProfileGsonModel {
         }
     }
 
-    class Location{
+    public class Location{
         private String street;
         private String city;
         private String state;
@@ -191,7 +191,7 @@ public class UserProfileGsonModel {
         }
     }
 
-    class Login{
+    public class Login{
         private String username;
         private String password;
 
@@ -218,7 +218,7 @@ public class UserProfileGsonModel {
         }
     }
 
-    class Picture{
+    public class Picture{
         private String thumbnail;
         private String medium;
 
