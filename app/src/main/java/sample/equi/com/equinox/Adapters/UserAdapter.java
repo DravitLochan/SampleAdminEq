@@ -42,7 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         UserProfileDbModel user = users.get(position);
         holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
         holder.email.setText(user.getEmail());
-        holder.contact_number.setText(user.getPhone());
+        holder.contact_number.setText("Lorem Ipsum is simply dummy ...");
         Uri uri = Uri.parse(user.getThumbnail());
         holder.thumbnail.setImageURI(uri);
     }
