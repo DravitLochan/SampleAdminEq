@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private GoogleProgressBar loader;
     private Drawable progressDrawable;
     private SwipeRefreshLayout refreshList;
+    /*private ActionMode.Callback actionModeCallback;
+    private ActionMode actionMode;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
