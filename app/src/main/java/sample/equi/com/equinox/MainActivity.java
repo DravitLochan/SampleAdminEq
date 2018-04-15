@@ -126,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         new SampleApiCall().execute(1 + "");
-        refreshList.setRefreshing(false);
-        Toast.makeText(this, "List updated! New user added at the end!", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -177,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 // Log.d("db size = ", UserProfileDbModel.listAll(UserProfileDbModel.class).size() + "");
                 loader.setVisibility(View.GONE);
+                if(refreshList.isRefreshing()){
+                    refreshList.setRefreshing(false);
+                    Toast.makeText(MainActivity.this, "List updated! New user added at the end!", Toast.LENGTH_SHORT).show();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
