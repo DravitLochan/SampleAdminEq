@@ -26,6 +26,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 import sample.equi.com.equinox.Adapters.UserAdapter;
+import sample.equi.com.equinox.Common.PreferencesManager;
 import sample.equi.com.equinox.Common.ServiceHandler;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.Models.GSON.UserProfileGsonModel;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<UserProfileDbModel> users;
     private UserAdapter userAdapter;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +69,31 @@ public class MainActivity extends AppCompatActivity {
 
     void init(Context context){
         Fresco.initialize(this);
+        preferencesManager = new PreferencesManager(context);
         listUsers = findViewById(R.id.rv_list_users);
         layoutManager = new LinearLayoutManager(context);
         listUsers.setLayoutManager(layoutManager);
         listUsers.setItemAnimator(new DefaultItemAnimator());
         users = new ArrayList<>();
-        fetchUsersFromDb();
         userAdapter = new UserAdapter(context, users);
         listUsers.setAdapter(userAdapter);
-        userAdapter.notifyDataSetChanged();
+        if(preferencesManager.getIsFirstTime()) {
+            Log.d("users size ", users.size() + "");
+            new SampleApiCall().execute();
+            Log.d("users size ", users.size() + "");
+            preferencesManager.setFirstTime(false);
+        } else {
+            fetchUsersFromDb();
+        }
     }
 
     private void fetchUsersFromDb() {
+        users.clear();
         List<UserProfileDbModel> dbUsers = UserProfileDbModel.listAll(UserProfileDbModel.class);
         for (int i = 0; i < dbUsers.size(); i++) {
             users.add(dbUsers.get(i));
         }
+        userAdapter.notifyDataSetChanged();
     }
 
     private class SampleApiCall extends AsyncTask<Void, Void, String>{
@@ -126,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             picture.getThumbnail(), picture.getMedium(), userProfileGsonModel.getDob(), userProfileGsonModel.getRegistered(),
                             userProfileGsonModel.getGender());
                     user.save();
+                    fetchUsersFromDb();
                 }
                 // Log.d("db size = ", UserProfileDbModel.listAll(UserProfileDbModel.class).size() + "");
             } catch (JSONException e) {
