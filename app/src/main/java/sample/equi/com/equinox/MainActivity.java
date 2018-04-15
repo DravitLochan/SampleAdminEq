@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init(MainActivity.this);
-        // new SampleApiCall().execute();
         // todo : add a splash screen and make it default launcher.
 
     }
@@ -93,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("users size ", users.size() + "");
             preferencesManager.setFirstTime(false);
         } else {
+            loader.setVisibility(View.GONE);
             fetchUsersFromDb();
         }
     }
