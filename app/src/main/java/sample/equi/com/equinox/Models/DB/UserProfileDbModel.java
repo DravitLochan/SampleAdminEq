@@ -35,12 +35,13 @@ public class UserProfileDbModel extends SugarRecord {
     // Miscellaneous
     String dob;
     String registered;
+    String gender;
 
     // much required by library
     public UserProfileDbModel() {
     }
 
-    public UserProfileDbModel(String title, String f_name, String l_name, String street, String city, String state, String postal_code, String email, String phone, String cell, String user_name, String password, String thumbnail, String medium, String dob, String registered) {
+    public UserProfileDbModel(String title, String f_name, String l_name, String street, String city, String state, String postal_code, String email, String phone, String cell, String user_name, String password, String thumbnail, String medium, String dob, String registered, String gender) {
         this.title = title;
         this.f_name = f_name;
         this.l_name = l_name;
@@ -57,6 +58,7 @@ public class UserProfileDbModel extends SugarRecord {
         this.medium = medium;
         this.dob = dob;
         this.registered = registered;
+        this.gender = gender;
     }
 
     public String getTitle() {
@@ -185,5 +187,13 @@ public class UserProfileDbModel extends SugarRecord {
 
     public void setRegistered(String registered) {
         this.registered = registered;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
