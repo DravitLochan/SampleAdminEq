@@ -1,6 +1,7 @@
 package sample.equi.com.equinox.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         UserProfileDbModel user = users.get(position);
         holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
         holder.email.setText(user.getEmail());
-        holder.contact_number.setText("Lorem Ipsum is simply dummy ...");
+        holder.contact_number.setText(user.getPhone());
+        if(user.getViewed()){
+            holder.name.setTypeface(null, Typeface.NORMAL);
+            holder.email.setTypeface(null, Typeface.NORMAL);
+        }
         Uri uri = Uri.parse(user.getThumbnail());
         holder.thumbnail.setImageURI(uri);
     }
