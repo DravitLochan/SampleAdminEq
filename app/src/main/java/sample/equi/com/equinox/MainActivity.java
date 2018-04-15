@@ -1,6 +1,7 @@
 package sample.equi.com.equinox;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
+import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
+import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<UserProfileDbModel> users;
     private UserAdapter userAdapter;
     private PreferencesManager preferencesManager;
+    private GoogleProgressBar loader;
+    private Drawable progressDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
     void init(Context context){
         Fresco.initialize(this);
+        progressDrawable = new ChromeFloatingCirclesDrawable.Builder(this)
+                .colors(getProgressDrawableColors())
+                .build();
         preferencesManager = new PreferencesManager(context);
+        loader = (GoogleProgressBar) findViewById(R.id.gp_loader);
         listUsers = findViewById(R.id.rv_list_users);
         layoutManager = new LinearLayoutManager(context);
         listUsers.setLayoutManager(layoutManager);
@@ -87,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int[] getProgressDrawableColors() {
+        int[] colors = new int[4];
+        colors[0] = getResources().getColor(R.color.red);
+        colors[1] = getResources().getColor(R.color.blue);
+        colors[2] = getResources().getColor(R.color.yellow);
+        colors[3] = getResources().getColor(R.color.green);
+        return colors;
+    }
+
     private void fetchUsersFromDb() {
         users.clear();
         List<UserProfileDbModel> dbUsers = UserProfileDbModel.listAll(UserProfileDbModel.class);
@@ -100,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            loader.setIndeterminateDrawable(progressDrawable);
         }
 
         @Override
@@ -140,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     fetchUsersFromDb();
                 }
                 // Log.d("db size = ", UserProfileDbModel.listAll(UserProfileDbModel.class).size() + "");
+                loader.setVisibility(View.GONE);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
