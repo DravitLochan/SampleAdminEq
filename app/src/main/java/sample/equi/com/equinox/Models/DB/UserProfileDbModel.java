@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Created by DravitLochan on 15-04-2018.
  */
 
-public class UserProfile extends SugarRecord {
+public class UserProfileDbModel extends SugarRecord {
 
     // Name
     String title;
@@ -37,10 +37,10 @@ public class UserProfile extends SugarRecord {
     String registered;
 
     // much required by library
-    public UserProfile() {
+    public UserProfileDbModel() {
     }
 
-    public UserProfile(String title, String f_name, String l_name, String street, String city, String state, String postal_code, String email, String phone, String cell, String user_name, String password, String thumbnail, String medium, String dob, String registered) {
+    public UserProfileDbModel(String title, String f_name, String l_name, String street, String city, String state, String postal_code, String email, String phone, String cell, String user_name, String password, String thumbnail, String medium, String dob, String registered) {
         this.title = title;
         this.f_name = f_name;
         this.l_name = l_name;
