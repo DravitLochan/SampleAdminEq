@@ -3,6 +3,7 @@ package sample.equi.com.equinox;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,7 +36,7 @@ import sample.equi.com.equinox.Common.ServiceHandler;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.Models.GSON.UserProfileGsonModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView listUsers;
     private RecyclerView.LayoutManager layoutManager;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private PreferencesManager preferencesManager;
     private GoogleProgressBar loader;
     private Drawable progressDrawable;
+    private SwipeRefreshLayout refreshList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init(MainActivity.this);
+        setListeners();
         // todo : add a splash screen and make it default launcher.
 
+    }
+
+    private void setListeners() {
+        refreshList.setOnRefreshListener(this);
     }
 
     @Override
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 .colors(getProgressDrawableColors())
                 .build();
         preferencesManager = new PreferencesManager(context);
+        refreshList = findViewById(R.id.srl_refresh_user_list);
         loader = (GoogleProgressBar) findViewById(R.id.gp_loader);
         listUsers = findViewById(R.id.rv_list_users);
         layoutManager = new LinearLayoutManager(context);
@@ -88,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         listUsers.setAdapter(userAdapter);
         if(preferencesManager.getIsFirstTime()) {
             Log.d("users size ", users.size() + "");
-            new SampleApiCall().execute();
+            new SampleApiCall().execute(10 + "");
             Log.d("users size ", users.size() + "");
             preferencesManager.setFirstTime(false);
         } else {
@@ -115,7 +123,15 @@ public class MainActivity extends AppCompatActivity {
         userAdapter.notifyDataSetChanged();
     }
 
-    private class SampleApiCall extends AsyncTask<Void, Void, String>{
+    @Override
+    public void onRefresh() {
+        new SampleApiCall().execute(1 + "");
+        refreshList.setRefreshing(false);
+        Toast.makeText(this, "List updated! New user added at the end!", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private class SampleApiCall extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -123,13 +139,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected String doInBackground(String... params) {
             String jsonStr = "";
             RequestBody body = new FormBody.Builder()
                     .build();
             try {
                 ServiceHandler sh = new ServiceHandler();
-                jsonStr = sh.makeServiceCall("https://randomuser.me/api/?results=10", sh.GET);
+                jsonStr = sh.makeServiceCall("https://randomuser.me/api/?results=" + params[0], sh.GET);
             } catch (Exception e) {
                 e.printStackTrace();
             }
