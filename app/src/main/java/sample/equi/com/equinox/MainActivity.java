@@ -3,10 +3,11 @@ package sample.equi.com.equinox;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,6 @@ import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-
 import sample.equi.com.equinox.Adapters.UserAdapter;
 import sample.equi.com.equinox.Common.PreferencesManager;
 import sample.equi.com.equinox.Common.ServiceHandler;
@@ -48,22 +48,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private GoogleProgressBar loader;
     private Drawable progressDrawable;
     private SwipeRefreshLayout refreshList;
-    /*private ActionMode.Callback actionModeCallback;
-    private ActionMode actionMode;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         init(MainActivity.this);
         setListeners();
-        // todo : add a splash screen and make it default launcher.
 
-    }
-
-    private void setListeners() {
-        refreshList.setOnRefreshListener(this);
     }
 
     @Override
@@ -83,6 +78,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         return super.onOptionsItemSelected(item);
     }
 
+    private void setListeners() {
+
+        refreshList.setOnRefreshListener(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
+
     void init(Context context){
         Fresco.initialize(this);
         progressDrawable = new ChromeFloatingCirclesDrawable.Builder(this)
@@ -90,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .build();
         preferencesManager = new PreferencesManager(context);
         refreshList = findViewById(R.id.srl_refresh_user_list);
-        loader = (GoogleProgressBar) findViewById(R.id.gp_loader);
+        loader = findViewById(R.id.gp_loader);
         listUsers = findViewById(R.id.rv_list_users);
         layoutManager = new LinearLayoutManager(context);
         listUsers.setLayoutManager(layoutManager);
@@ -133,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
-    private class SampleApiCall extends AsyncTask<String, Void, String>{
+    private class SampleApiCall extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -185,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                if(refreshList.isRefreshing()){
+                    refreshList.setRefreshing(false);
+                    Toast.makeText(MainActivity.this, "Error. Check your internet connection!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
