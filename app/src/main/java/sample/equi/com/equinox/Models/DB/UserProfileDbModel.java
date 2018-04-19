@@ -37,6 +37,7 @@ public class UserProfileDbModel extends SugarRecord {
     String registered;
     String gender;
     Boolean isViewed;
+    Boolean isImportant;
 
     // much required by library
     public UserProfileDbModel() {
@@ -61,6 +62,7 @@ public class UserProfileDbModel extends SugarRecord {
         this.registered = registered;
         this.gender = gender;
         this.isViewed = false;
+        this.isImportant = false;
     }
 
     public String getTitle() {
@@ -205,5 +207,13 @@ public class UserProfileDbModel extends SugarRecord {
 
     public void setViewed(Boolean viewed) {
         isViewed = viewed;
+    }
+
+    public Boolean getImportant() {
+        return isImportant;
+    }
+
+    public void setImportant(Boolean important) {
+        isImportant = important;
     }
 }

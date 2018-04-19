@@ -85,9 +85,9 @@
                     android:layout_marginRight="10dp"/>
 
                 <ImageView
-                    android:id="@+id/iv_mark_favourite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_mark_important"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_star_border_grey_24dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"

@@ -1,6 +1,7 @@
 package sample.equi.com.equinox.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -39,8 +40,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         UserProfileDbModel user = users.get(position);
+        final long id = user.getId();
         holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
         holder.email.setText(user.getEmail());
         holder.contact_number.setText(user.getPhone());
@@ -50,6 +52,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
         Uri uri = Uri.parse(user.getThumbnail());
         holder.thumbnail.setImageURI(uri);
+        holder.mark_important.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserProfileDbModel tUser = UserProfileDbModel.findById(UserProfileDbModel.class, id);
+                if(tUser.getImportant()){
+                    holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
+                    tUser.setImportant(false);
+                    tUser.save();
+                } else {
+                    holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
+                    tUser.setImportant(true);
+                    tUser.save();
+                }
+            }
+        });
     }
 
     @Override
@@ -61,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         CardView container_user_profile;
         TextView name, email, contact_number, time_fetched;
-        ImageView mark_favourite;
+        ImageView mark_important;
         SimpleDraweeView thumbnail;
 
         public ViewHolder(View itemView) {
@@ -71,7 +88,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             email = itemView.findViewById(R.id.tv_user_email_id);
             contact_number = itemView.findViewById(R.id.tv_user_contact_number);
             time_fetched = itemView.findViewById(R.id.tv_time_fetched);
-            mark_favourite = itemView.findViewById(R.id.iv_mark_favourite);
+            mark_important = itemView.findViewById(R.id.iv_mark_important);
             thumbnail = itemView.findViewById(R.id.sdv_user_thumbnail);
         }
 
