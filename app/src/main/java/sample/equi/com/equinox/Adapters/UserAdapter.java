@@ -6,16 +6,24 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import sample.equi.com.equinox.Animator.FlipAnimator;
+import sample.equi.com.equinox.MainActivity;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.R;
 
@@ -27,10 +35,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     Context context;
     ArrayList<UserProfileDbModel> users;
+    ActionMode actionMode;
+    MainActivity.ActionModeCallback actionModeCallback;
+    Map selectedUsers;
 
-    public UserAdapter(Context context, ArrayList<UserProfileDbModel> users) {
+    public UserAdapter(Context context, ArrayList<UserProfileDbModel> users, ActionMode actionMode, MainActivity.ActionModeCallback actionModeCallback) {
         this.context = context;
         this.users = users;
+        this.actionMode = actionMode;
+        this.actionModeCallback = actionModeCallback;
+        selectedUsers = new HashMap();
     }
 
     @Override
@@ -40,7 +54,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         UserProfileDbModel user = users.get(position);
         final long id = user.getId();
         holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
@@ -52,6 +66,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
         Uri uri = Uri.parse(user.getThumbnail());
         holder.thumbnail.setImageURI(uri);
+        if(user.getImportant())
+            holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
+        else
+            holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
+
+        // Mark Important functionality
         holder.mark_important.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,14 +79,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                 if(tUser.getImportant()){
                     holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
                     tUser.setImportant(false);
+                    Toast.makeText(context, "Message marked un-important", Toast.LENGTH_LONG).show();
                     tUser.save();
                 } else {
                     holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
                     tUser.setImportant(true);
                     tUser.save();
+                    Toast.makeText(context, "Message marked un-important", Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionModeClicked(position, holder);
+            }
+        });
+
+        if(selectedUsers.get(position) != null){
+            holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
+        }
+        else{
+            holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#ffffff"));
+        }
     }
 
     @Override
@@ -74,11 +110,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         return users.size();
     }
 
+    void actionModeClicked(int position, ViewHolder holder){
+        Log.d("position", position + "");
+        if(selectedUsers.get(position) == null){
+            selectedUsers.put(position, true);
+            Log.d("selected users size", selectedUsers.size() + "");
+            holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
+            FlipAnimator.flipView(context, holder.thumbnail, holder.doneThumbnail, true);
+        } else {
+            selectedUsers.remove(position);
+            Log.d("selected users size", selectedUsers.size() + "");
+            holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#ffffff"));
+            FlipAnimator.flipView(context, holder.doneThumbnail, holder.thumbnail, false);
+        }
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         CardView container_user_profile;
         TextView name, email, contact_number, time_fetched;
-        ImageView mark_important;
+        ImageView mark_important, doneThumbnail;
         SimpleDraweeView thumbnail;
 
         public ViewHolder(View itemView) {
@@ -90,6 +141,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             time_fetched = itemView.findViewById(R.id.tv_time_fetched);
             mark_important = itemView.findViewById(R.id.iv_mark_important);
             thumbnail = itemView.findViewById(R.id.sdv_user_thumbnail);
+            doneThumbnail = itemView.findViewById(R.id.iv_done_thumbnail);
         }
 
     }

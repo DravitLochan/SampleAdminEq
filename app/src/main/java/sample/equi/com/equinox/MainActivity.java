@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private GoogleProgressBar loader;
     private Drawable progressDrawable;
     private SwipeRefreshLayout refreshList;
+    private ActionModeCallback actionModeCallback;
+    private ActionMode actionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // todo : add an option to search
-        if(id == R.id.mi_search) {
+        if (id == R.id.mi_search) {
             Toast.makeText(MainActivity.this, "Search will be live soon", Toast.LENGTH_LONG).show();
             return true;
         }
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    void init(Context context){
+    void init(Context context) {
         Fresco.initialize(this);
         progressDrawable = new ChromeFloatingCirclesDrawable.Builder(this)
                 .colors(getProgressDrawableColors())
@@ -105,9 +108,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         listUsers.setLayoutManager(layoutManager);
         listUsers.setItemAnimator(new DefaultItemAnimator());
         users = new ArrayList<>();
-        userAdapter = new UserAdapter(context, users);
+        userAdapter = new UserAdapter(context, users, actionMode, actionModeCallback);
         listUsers.setAdapter(userAdapter);
-        if(preferencesManager.getIsFirstTime()) {
+        if (preferencesManager.getIsFirstTime()) {
             Log.d("users size ", users.size() + "");
             new SampleApiCall().execute(10 + "");
             Log.d("users size ", users.size() + "");
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             loader.setVisibility(View.GONE);
             fetchUsersFromDb();
         }
+        actionModeCallback = new ActionModeCallback();
     }
 
     private int[] getProgressDrawableColors() {
@@ -188,18 +192,47 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 // Log.d("db size = ", UserProfileDbModel.listAll(UserProfileDbModel.class).size() + "");
                 loader.setVisibility(View.GONE);
-                if(refreshList.isRefreshing()){
+                if (refreshList.isRefreshing()) {
                     refreshList.setRefreshing(false);
                     Toast.makeText(MainActivity.this, "List updated! New user added at the end!", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                if(refreshList.isRefreshing()){
+                if (refreshList.isRefreshing()) {
                     refreshList.setRefreshing(false);
                     Toast.makeText(MainActivity.this, "Error. Check your internet connection!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+    }
 
+    public class ActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.action_mode_menu, menu);
+
+            refreshList.setEnabled(false);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if(item.getItemId() == R.id.mi_delete){
+                Toast.makeText(MainActivity.this, "Delete will be live soon", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            refreshList.setEnabled(true);
+        }
     }
 }
