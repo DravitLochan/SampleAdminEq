@@ -64,37 +64,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        // todo : add an option to search
-        if (id == R.id.mi_search) {
-            Toast.makeText(MainActivity.this, "Search will be live soon", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setListeners() {
-
-        refreshList.setOnRefreshListener(this);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
-
     void init(Context context) {
         Fresco.initialize(this);
         progressDrawable = new ChromeFloatingCirclesDrawable.Builder(this)
@@ -120,6 +89,37 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             fetchUsersFromDb();
         }
         actionModeCallback = new ActionModeCallback();
+    }
+
+    private void setListeners() {
+
+        refreshList.setOnRefreshListener(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        // todo : add an option to search
+        if (id == R.id.mi_search) {
+            Toast.makeText(MainActivity.this, "Search will be live soon", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private int[] getProgressDrawableColors() {

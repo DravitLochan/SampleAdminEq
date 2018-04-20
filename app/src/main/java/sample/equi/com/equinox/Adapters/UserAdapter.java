@@ -47,6 +47,27 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         selectedUsers = new HashMap();
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        CardView container_user_profile;
+        TextView name, email, contact_number, time_fetched;
+        ImageView mark_important, doneThumbnail;
+        SimpleDraweeView thumbnail;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            container_user_profile = itemView.findViewById(R.id.cv_user);
+            name = itemView.findViewById(R.id.tv_user_name);
+            email = itemView.findViewById(R.id.tv_user_email_id);
+            contact_number = itemView.findViewById(R.id.tv_user_contact_number);
+            time_fetched = itemView.findViewById(R.id.tv_time_fetched);
+            mark_important = itemView.findViewById(R.id.iv_mark_important);
+            thumbnail = itemView.findViewById(R.id.sdv_user_thumbnail);
+            doneThumbnail = itemView.findViewById(R.id.iv_done_thumbnail);
+        }
+
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_adapter, parent, false);
@@ -57,27 +78,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final UserProfileDbModel user = users.get(position);
         final long id = user.getId();
-        holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
-        holder.email.setText(user.getEmail());
-        holder.contact_number.setText(user.getPhone());
-        if(user.getViewed()){
-            holder.name.setTypeface(null, Typeface.NORMAL);
-            holder.email.setTypeface(null, Typeface.NORMAL);
-        }
-        Uri uri = Uri.parse(user.getThumbnail());
-        holder.thumbnail.setImageURI(uri);
 
-        if(user.getViewed()){
-            setViewed(holder);
-        }
+        populateData(holder, user, position);
 
-        if(user.getImportant())
-            holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
-        else
-            holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
+        setListeners(holder, position, user, id);
+    }
 
+    private void setListeners(final ViewHolder holder, final int position, final UserProfileDbModel user,final long id) {
 
-        // Mark Important functionality
         holder.mark_important.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +129,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             }
         });
 
+    }
+
+    private void populateData(ViewHolder holder, UserProfileDbModel user, final int position) {
+        holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
+        holder.email.setText(user.getEmail());
+        holder.contact_number.setText(user.getPhone());
+
+        if(user.getViewed()){
+            holder.name.setTypeface(null, Typeface.NORMAL);
+            holder.email.setTypeface(null, Typeface.NORMAL);
+        }
+
+        Uri uri = Uri.parse(user.getThumbnail());
+        holder.thumbnail.setImageURI(uri);
+
+        if(user.getViewed()){
+            setViewed(holder);
+        }
+
+        if(user.getImportant())
+            holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
+        else
+            holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
+
         if(selectedUsers.get(position) != null){
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
         }
@@ -153,26 +185,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#ffffff"));
             FlipAnimator.flipView(context, holder.doneThumbnail, holder.thumbnail, false);
         }
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-
-        CardView container_user_profile;
-        TextView name, email, contact_number, time_fetched;
-        ImageView mark_important, doneThumbnail;
-        SimpleDraweeView thumbnail;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            container_user_profile = itemView.findViewById(R.id.cv_user);
-            name = itemView.findViewById(R.id.tv_user_name);
-            email = itemView.findViewById(R.id.tv_user_email_id);
-            contact_number = itemView.findViewById(R.id.tv_user_contact_number);
-            time_fetched = itemView.findViewById(R.id.tv_time_fetched);
-            mark_important = itemView.findViewById(R.id.iv_mark_important);
-            thumbnail = itemView.findViewById(R.id.sdv_user_thumbnail);
-            doneThumbnail = itemView.findViewById(R.id.iv_done_thumbnail);
-        }
-
     }
 }
