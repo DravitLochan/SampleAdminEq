@@ -97,6 +97,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             }
         });
 
+        holder.container_user_profile.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                actionModeClicked(position, holder);
+                return true;
+            }
+        });
+
         if(selectedUsers.get(position) != null){
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
         }
