@@ -55,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        UserProfileDbModel user = users.get(position);
+        final UserProfileDbModel user = users.get(position);
         final long id = user.getId();
         holder.name.setText(user.getTitle() + "." + " " + user.getF_name() + " " + user.getL_name());
         holder.email.setText(user.getEmail());
@@ -66,10 +66,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
         Uri uri = Uri.parse(user.getThumbnail());
         holder.thumbnail.setImageURI(uri);
+
+        if(user.getViewed()){
+            setViewed(holder);
+        }
+
         if(user.getImportant())
             holder.mark_important.setImageResource(R.drawable.ic_star_yellow);
         else
             holder.mark_important.setImageResource(R.drawable.ic_star_border_grey_24dp);
+
 
         // Mark Important functionality
         holder.mark_important.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +111,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             }
         });
 
+        holder.container_user_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "User Profile visiting will be live soon", Toast.LENGTH_SHORT).show();
+                user.setViewed(true);
+                user.save();
+                setViewed(holder);
+            }
+        });
+
         if(selectedUsers.get(position) != null){
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
         }
         else{
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#ffffff"));
         }
+    }
+
+    private void setViewed(ViewHolder holder) {
+        holder.name.setTypeface(null, Typeface.NORMAL);
+        holder.email.setTypeface(null, Typeface.NORMAL);
+        holder.contact_number.setTypeface(null, Typeface.NORMAL);
     }
 
     @Override
