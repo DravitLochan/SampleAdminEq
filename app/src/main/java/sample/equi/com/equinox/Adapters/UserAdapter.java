@@ -1,6 +1,7 @@
 package sample.equi.com.equinox.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import sample.equi.com.equinox.Animator.FlipAnimator;
 import sample.equi.com.equinox.MainActivity;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.R;
+import sample.equi.com.equinox.UserProfile;
 
 /**
  * Created by DravitLochan on 15-04-2018.
@@ -122,10 +124,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         holder.container_user_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "User Profile visiting will be live soon", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "User Profile visiting will be live soon", Toast.LENGTH_SHORT).show();
                 user.setViewed(true);
                 user.save();
                 setViewed(holder);
+                Intent intent = new Intent(context, UserProfile.class);
+                intent.putExtra("ID", id + "");
+                context.startActivity(intent);
             }
         });
 
