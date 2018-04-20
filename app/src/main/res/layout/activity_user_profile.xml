@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfile">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="126dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginTop="20dip"
+                    android:text="Name"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_profile_medium_image"
+                    android:layout_width="86dp"
+                    android:layout_height="106dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    fresco:roundAsCircle="true"
+                    fresco:roundBottomStart="false"
+                    fresco:roundBottomEnd="false"
+                    fresco:roundingBorderWidth="1dp"
+                    fresco:roundingBorderColor="@color/colorWhite" />
+
+            </RelativeLayout>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444"></TableRow>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name" />
+
+                <TextView
+                    android:id="@+id/tv_profile_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full name with titlte"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email id" />
+
+                <TextView
+                    android:id="@+id/tv_profile_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="this@example.com"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="user name" />
+
+                <TextView
+                    android:id="@+id/tv_profile_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="UserName"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="password" />
+
+                <TextView
+                    android:id="@+id/tv_profile_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Testing@123"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DOB" />
+
+                <TextView
+                    android:id="@+id/tv_profile_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="yyyy-dd-mm hh:mm:ss"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone" />
+
+                <TextView
+                    android:id="@+id/tv_profile_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(999)-999-9999"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cell" />
+
+                <TextView
+                    android:id="@+id/tv_profile_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(999)-999-9999"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registered ON" />
+
+                <TextView
+                    android:id="@+id/tv_profile_registered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="yyyy-dd-mm hh:mm:ss"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender" />
+
+                <TextView
+                    android:id="@+id/tv_profile_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location" />
+
+                <TextView
+                    android:id="@+id/tv_profile_location_street"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0000 abc asca"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_location_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="abcd efgh"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_location_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="abcd efgh"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_location_post_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00000"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#444"></TableRow>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
