@@ -116,7 +116,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             selectedUsers.put(position, true);
             Log.d("selected users size", selectedUsers.size() + "");
             holder.container_user_profile.setCardBackgroundColor(Color.parseColor("#c1c1c1"));
-            FlipAnimator.flipView(context, holder.thumbnail, holder.doneThumbnail, true);
+            FlipAnimator.flipView(context, holder.thumbnail, holder.doneThumbnail, false);
         } else {
             selectedUsers.remove(position);
             Log.d("selected users size", selectedUsers.size() + "");
