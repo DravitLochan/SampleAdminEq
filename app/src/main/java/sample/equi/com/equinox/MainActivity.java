@@ -17,6 +17,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -34,6 +35,7 @@ import java.util.List;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import sample.equi.com.equinox.Adapters.UserAdapter;
+import sample.equi.com.equinox.Common.Helper;
 import sample.equi.com.equinox.Common.PreferencesManager;
 import sample.equi.com.equinox.Common.ServiceHandler;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private SwipeRefreshLayout refreshList;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
+    private Helper helper;
+    private ImageView noInternetImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     void init(Context context) {
         Fresco.initialize(this);
+        helper = Helper.getInstance();
         progressDrawable = new ChromeFloatingCirclesDrawable.Builder(this)
                 .colors(getProgressDrawableColors())
                 .build();
@@ -79,12 +84,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         users = new ArrayList<>();
         userAdapter = new UserAdapter(context, users, actionMode, actionModeCallback);
         listUsers.setAdapter(userAdapter);
-        if (preferencesManager.getIsFirstTime()) {
+        noInternetImage = findViewById(R.id.iv_network_thing);
+        if(helper.networkAvailable(context)){
+            noInternetImage.setVisibility(View.GONE);
+        }
+        if (preferencesManager.getIsFirstTime() && helper.networkAvailable(context)) {
             Log.d("users size ", users.size() + "");
             new SampleApiCall().execute(10 + "");
             Log.d("users size ", users.size() + "");
             preferencesManager.setFirstTime(false);
-        } else {
+        } else if(!helper.networkAvailable(context)){
+            loader.setVisibility(View.GONE);
+            noInternetImage.setVisibility(View.GONE);
+            Toast.makeText(context, "Network not available", Toast.LENGTH_SHORT).show();
+        }else {
             loader.setVisibility(View.GONE);
             fetchUsersFromDb();
         }
@@ -142,7 +155,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        new SampleApiCall().execute(1 + "");
+        if(helper.networkAvailable(MainActivity.this)){
+            noInternetImage.setVisibility(View.GONE);
+            new SampleApiCall().execute(1 + "");
+        } else {
+            Toast.makeText(MainActivity.this, "Network not available", Toast.LENGTH_SHORT).show();
+            refreshList.setRefreshing(false);
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package sample.equi.com.equinox.Adapters;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,7 +21,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import sample.equi.com.equinox.Animator.FlipAnimator;
@@ -28,6 +28,7 @@ import sample.equi.com.equinox.MainActivity;
 import sample.equi.com.equinox.Models.DB.UserProfileDbModel;
 import sample.equi.com.equinox.R;
 import sample.equi.com.equinox.UserProfile;
+import sample.equi.com.equinox.Common.Helper;
 
 /**
  * Created by DravitLochan on 15-04-2018.
@@ -40,6 +41,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     ActionMode actionMode;
     MainActivity.ActionModeCallback actionModeCallback;
     Map selectedUsers;
+    Helper helper;
+
 
     public UserAdapter(Context context, ArrayList<UserProfileDbModel> users, ActionMode actionMode, MainActivity.ActionModeCallback actionModeCallback) {
         this.context = context;
@@ -47,6 +50,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         this.actionMode = actionMode;
         this.actionModeCallback = actionModeCallback;
         selectedUsers = new HashMap();
+        helper = Helper.getInstance();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -146,7 +150,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             holder.email.setTypeface(null, Typeface.NORMAL);
         }
 
-        Uri uri = Uri.parse(user.getThumbnail());
+        Uri uri;
+
+        if(helper.networkAvailable(context)){
+            uri = Uri.parse(user.getThumbnail());
+        } else {
+            uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                    "://" + context.getResources().getResourcePackageName(R.drawable.user)
+                    + '/' + context.getResources().getResourceTypeName(R.drawable.user) + '/' + context.getResources().getResourceEntryName(R.drawable.user) );
+
+        }
         holder.thumbnail.setImageURI(uri);
 
         if(user.getViewed()){
