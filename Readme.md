@@ -11,5 +11,4 @@ An attempt to create a gmail like UI. Instead of e-mails, it lists user profiles
 * **Dravit Lochan**  [DravitLochan](https://github.com/DravitLochan)
 
 
-![Image](img1.png?raw=true "Image 1")
-![Image](img2.png?raw=true "Image 2")
+![Image](img1.png?raw=true "Image 1") ![Image](img2.png?raw=true "Image 2")
